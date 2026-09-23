@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SEO Job Radar · Company careers, checked</title>
+  <meta name="description" content="Remote SEO openings checked directly on company career pages. Find international full-time, part-time and contract roles, with India eligibility and source evidence.">
+  <meta name="theme-color" content="#112c36">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css">
+  <script src="app.js" type="module"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to jobs</a>
+<aside class="sidebar">
+  <a class="brand" href="./" aria-label="SEO Job Radar home"><span class="logo">↗</span><span>SEO Job Radar<small>PERSONAL WORKSPACE</small></span></a>
+  <div class="nav-label">WORKSPACE</div>
+  <nav aria-label="Workspace"><button class="nav active" data-view="jobs"><span>▦</span> Find jobs <b id="nav-count">0</b></button><button class="nav" data-view="saved"><span>☆</span> Saved jobs <b id="saved-count">0</b></button><button class="nav" data-view="applied"><span>✓</span> Applied <b id="applied-count">0</b></button><button class="nav" data-view="sources"><span>◎</span> Career sources</button></nav>
+  <div class="sidebar-bottom"><div class="source-note"><span class="check-icon">✓</span><strong>Direct from the source</strong><p>Employer career pages and their official hiring systems. No job portals.</p></div><a href="https://github.com/imanishmehta/seo-job-radar" target="_blank" rel="noopener noreferrer" class="repo-link">imanishmehta / GitHub ↗</a></div>
+</aside>
+<main id="main">
+  <header class="topbar"><span>YOUR NEXT SEO ROLE</span><a class="subtle" href="https://github.com/imanishmehta/seo-job-radar/actions/workflows/refresh.yml" target="_blank" rel="noopener noreferrer">Crawl activity ↗</a></header>
+  <section class="page-heading"><div><div class="eyebrow">INTERNATIONAL OPPORTUNITIES</div><h1 id="page-title">Find your next remote role.</h1><p id="page-subtitle">SEO openings with a direct path to the company.</p></div><button id="refresh" class="button secondary" title="Load the latest published results">↻ Reload results</button></section>
+  <div id="notice" role="status" class="notice" hidden></div>
+  <section class="stats" aria-label="Crawl summary"><div><span>Active SEO listings</span><strong id="stat-active">—</strong><small>Checked on employer pages</small></div><div><span>India / worldwide</span><strong id="stat-india">—</strong><small>Remote roles with location evidence</small></div><div><span>Companies monitored</span><strong id="stat-sources">—</strong><small id="source-health">Checking source coverage</small></div><div><span>Last crawl</span><strong id="stat-updated" class="time">—</strong><small id="crawl-schedule">Scheduled every 6 hours</small></div></section>
+  <section id="jobs-view">
+    <div class="toolbar"><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search role, company or keyword" aria-label="Search jobs"></label><label class="sort"><span>Sort by</span><select id="sort"><option value="recommended">India fit</option><option value="posted">Latest posted</option><option value="found">Recently found</option><option value="company">Company name</option></select></label></div>
+    <button class="button secondary mobile-filter" id="toggle-filters" aria-expanded="false" aria-controls="filters">Show filters</button>
+    <div class="workspace">
+      <form class="filters" id="filters"><div class="filter-heading"><h2>Filters</h2><button type="button" id="reset" class="text-button">Reset</button></div>
+        <label>Work location<select id="eligibility"><option value="potential">India + unclear</option><option value="eligible">India / worldwide only</option><option value="all">All locations</option><option value="Restricted">Restricted locations</option><option value="Unclear">Eligibility unclear</option></select></label>
+        <label>Work arrangement<select id="remote"><option value="Remote">Remote only</option><option value="all">Include unclear</option></select></label>
+        <fieldset><legend>Employment type</legend><label><input type="checkbox" name="type" value="Full-time"> Full-time</label><label><input type="checkbox" name="type" value="Part-time"> Part-time</label><label><input type="checkbox" name="type" value="Contract"> Contract / freelance</label><label><input type="checkbox" name="type" value="Not specified"> Not specified</label></fieldset>
+        <label>Posting date<select id="age"><option value="recent">Last 30 days + unknown</option><option value="all">Any date</option><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option><option value="unknown">Date not provided</option></select></label>
+        <label>Verification<select id="status"><option value="active">Active listings</option><option value="needs_check">Needs recheck</option><option value="closed">Closed / expired</option><option value="all">All statuses</option></select></label>
+        <p class="filter-note">“Remote” can still be country-restricted. Check the evidence before applying.</p>
+      </form>
+      <section class="results" aria-label="Job results"><div class="results-heading"><h2 id="result-count" aria-live="polite">Loading openings…</h2><span class="verified-label">✓ Official sources only</span></div><div id="job-list" aria-live="polite"></div></section>
+    </div>
+  </section>
+  <section id="sources-view" hidden><div class="coverage-banner"><div><h2>What is being checked</h2><p>Each source starts at an employer’s career page. Linked hiring systems are accepted only when the employer page points to them.</p></div><a class="button secondary" href="https://github.com/imanishmehta/seo-job-radar/edit/main/sources.json" target="_blank" rel="noopener noreferrer">Manage companies ↗</a></div><div id="discovery"></div><div id="source-list" class="source-grid"></div></section>
+  <footer>Live page checks reduce expired listings. They cannot confirm whether a company is interviewing. <span>Saved and applied status stay in this browser.</span></footer>
+</main>
+<dialog id="detail"><div class="dialog-top"><span>OFFICIAL LISTING DETAILS</span><button id="close-dialog" class="icon-button" aria-label="Close job details">×</button></div><div id="detail-content"></div></dialog>
+<div id="toast" role="status" hidden></div>
+</body></html>

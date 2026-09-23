@@ -1,0 +1,80 @@
+name: Refresh career pages and deploy
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['README.md', 'site/data/jobs.json']
+  schedule:
+    - cron: '17 1,7,13,19 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: career-radar-production
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    outputs:
+      usable_sources: ${{ steps.health.outputs.usable_sources }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install crawler dependencies
+        run: pip install -r requirements.txt
+      - name: Check crawler behavior
+        run: python -m unittest discover -s tests -v
+      - name: Crawl official career pages
+        env:
+          SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+        run: python scripts/crawl.py
+      - name: Preserve history
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add site/data/jobs.json
+          if ! git diff --staged --quiet; then
+            git commit -m 'Refresh verified career listings'
+            git push
+          fi
+      - name: Source health
+        id: health
+        run: |
+          python - <<'PY'
+          import json, os
+          d = json.load(open('site/data/jobs.json'))
+          usable = sum(s['status'] in ('ok', 'partial') for s in d['sources'])
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f'usable_sources={usable}\n')
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
+              f.write(f"## Career-page refresh\n\n{len(d['jobs'])} tracked SEO listings. {usable}/{len(d['sources'])} sources yielded readable results or a complete job feed.\n\n")
+              for s in d['sources']:
+                  f.write(f"- {s['name']}: {s['status']} ({s['jobs']} active)\n")
+          PY
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+  deploy:
+    needs: refresh
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish dashboard
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Flag total crawler failure after publishing honest status
+        if: needs.refresh.outputs.usable_sources == '0'
+        run: |
+          echo 'No readable sources this run. Published needs-recheck states; investigate source health.'
+          exit 1
