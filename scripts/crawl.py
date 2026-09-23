@@ -27,7 +27,7 @@ NOW = datetime.now(timezone.utc).isoformat()
 SEO = re.compile(r'\bseo\b|search engine optimi[sz]ation|organic (?:search|growth)|link.building|\b[ag]eo\b.*(?:strategist|specialist|manager)', re.I)
 CAREER = re.compile(r'career|vacanc|job|join.our.team|work.with.us|opportunit', re.I)
 CLOSED = re.compile(r'(?:this|the) (?:job|position|role|vacancy) (?:is |has been |was )?(?:no longer available|closed|filled)|no longer accepting applications|job not found|position has been filled', re.I)
-PORTALS = {'linkedin.com','indeed.com','glassdoor.com','ziprecruiter.com','jobgether.com','workingnomads.com','remoterocketship.com','arc.dev','weworkremotely.com','wellfound.com','himalayas.app','dailyremote.com','flexjobs.com','remote.co','nodesk.co','builtin.com','jobstreet.com','reddit.com','facebook.com','quora.com','wfh.team','heyremote.io','digitalmarketing.jobs','laborx.com'}
+PORTALS = {'linkedin.com','indeed.com','glassdoor.com','ziprecruiter.com','jobgether.com','workingnomads.com','remoterocketship.com','arc.dev','weworkremotely.com','wellfound.com','himalayas.app','dailyremote.com','flexjobs.com','remote.co','nodesk.co','builtin.com','jobstreet.com','reddit.com','facebook.com','quora.com','wfh.team','heyremote.io','digitalmarketing.jobs','laborx.com','seojobs.com','upwork.com','dynamitejobs.com','fiverr.com','freelancer.com','remoteok.com'}
 ATS = {'jobs.lever.co','jobs.eu.lever.co','boards.greenhouse.io','job-boards.greenhouse.io','boards.eu.greenhouse.io','jobs.ashbyhq.com','jobs.jobvite.com','apply.workable.com'}
 
 def text(value):
@@ -400,8 +400,10 @@ def discover():
     candidates=[]; errors=[]
     # Free Serper accounts reject some quoted / advanced query patterns.
     # Keep search plain; enforce employer-only sources on returned URLs.
-    queries=['SEO remote careers', 'SEO remote contract careers',
-             'SEO part time careers', 'SEO worldwide careers']
+    regions=['United States','United Kingdom','Canada','Australia','Germany','Singapore','Ireland','Netherlands']
+    region=regions[int(datetime.now(timezone.utc).timestamp()//21600)%len(regions)]
+    queries=[f'SEO agency careers remote {region}', f'SEO remote contract careers {region}',
+             f'SEO part time join our team {region}', 'SEO worldwide company careers']
     for query in queries:
         try:
             r=requests.post('https://google.serper.dev/search',headers={'X-API-KEY':key},json={'q':query,'num':10},timeout=25)
@@ -421,6 +423,19 @@ def main():
     sources=json.loads((ROOT/'sources.json').read_text())
     old=json.loads(DATA.read_text()) if DATA.exists() else {}
     previous={j['id']:j for j in old.get('jobs',[])}
+    discovery=old.get('discovery',{'status':'not_configured','candidates':[]}) if args.no_discovery or args.source else discover()
+    if not args.no_discovery and not args.source:
+        from auto_company import adopt
+        # Retry pending verification without additional search requests.
+        candidates={c['url']:c for c in old.get('discovery',{}).get('candidates',[])}
+        candidates.update({c['url']:c for c in discovery.get('candidates',[])})
+        discovery['candidates']=list(candidates.values())[:100]
+        added=adopt(discovery,sources,Fetcher())
+        if added:
+            source_path=ROOT/'sources.json'
+            temp_sources=source_path.with_suffix('.tmp')
+            temp_sources.write_text(json.dumps(sources,ensure_ascii=False,indent=2)+'\n')
+            temp_sources.replace(source_path)
     selected=[s for s in sources if not args.source or s['id']==args.source]
     if not selected:
         raise SystemExit('No matching source')
@@ -433,7 +448,6 @@ def main():
     if args.source:
         jobs += [j for j in old.get('jobs',[]) if j['source_id']!=args.source]
         reports += [s for s in old.get('sources',[]) if s['id']!=args.source]
-    discovery=old.get('discovery',{'status':'not_configured','candidates':[]}) if args.no_discovery else discover()
     jobs=dedupe_jobs(jobs)
     for report in reports:
         report['jobs']=sum(j['source_id']==report['id'] and j['status']=='active' for j in jobs)
