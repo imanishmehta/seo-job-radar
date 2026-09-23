@@ -256,5 +256,18 @@
     "url": "https://www.thindglobalservices.com/careers.html",
     "country": "United Kingdom",
     "discovered_via": "Researched official career page"
+  },
+  {
+    "id": "bestmarketing-com-sg-d70249",
+    "name": "Best Marketing Agency Pte Ltd",
+    "url": "https://www.bestmarketing.com.sg/careers",
+    "country": "Singapore",
+    "discovered_via": "Automatic: homepage career link and same-domain organization address",
+    "verification": {
+      "homepage": "https://www.bestmarketing.com.sg/",
+      "career_link": "https://www.bestmarketing.com.sg/careers/",
+      "organization_url": "https://www.bestmarketing.com.sg/",
+      "country": "Singapore"
+    }
   }
 ]
