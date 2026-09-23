@@ -45,7 +45,7 @@ def canonical(url):
 
 def public_url(url):
     p = urlsplit(url)
-    if p.scheme not in ('https','http') or not p.hostname or p.username or p.port not in (None,80,443):
+    if p.scheme not in ('https','http') or not p.hostname or p.username is not None or p.password is not None or p.port not in (None,80,443):
         raise ValueError('Unsupported URL')
     if any(not ipaddress.ip_address(x[4][0]).is_global for x in socket.getaddrinfo(p.hostname, p.port or 443)):
         raise ValueError('Non-public destination')
@@ -228,11 +228,15 @@ def parse_html(source, response, hint=''):
         main=soup.find('main') or soup.find('article') or soup
         description=text(main)
         apply=any(re.search(r'apply|submit.*(?:resume|application)|send.*(?:cv|resume)', a.get_text(' ',strip=True),re.I) for a in soup.select('a,button')) or bool(soup.select('input[type="file"],form[action*="apply"]'))
-        if SEO.search(title or '') and apply and not re.search(r'careers|\bjobs\b|open positions',title,re.I):
-            loc=re.search(r'(?:Location|Based in)\s*:\s*([^\n]{2,100})',description,re.I)
+        if SEO.search(title or '') and apply and not re.search(r'\bcareers?\b|\bjobs\b|open positions',title,re.I):
+            description=re.split(r'\n(?:More roles|Related openings)\n',description,maxsplit=1,flags=re.I)[0]
+            loc=re.search(r'(?:Location|Based in)\s*[:\n]\s*:?\s*([^\n]{2,100})',description,re.I)
+            lead=description.splitlines()[:12]
+            location=loc.group(1) if loc else next((line for line in lead if re.fullmatch(r'United Kingdom|United States|Canada|Australia|Singapore|Germany|South Africa|Worldwide|Global|India|Remote',line,re.I)), '')
+            workplace=next((line for line in lead if re.fullmatch(r'Hybrid|On.?site|Remote',line,re.I)), '')
             posted=re.search(r'Date Posted\s*:\s*([^\n]{2,40})',description,re.I)
             kind=re.search(r'Job Type\s*:\s*([^\n]{2,60})',description,re.I)
-            job=make_job(source,title,response.url,description,loc.group(1) if loc else '',kind.group(1) if kind else '',posted.group(1) if posted else None,proof='Live employer role page with application control')
+            job=make_job(source,title,response.url,description,location,kind.group(1) if kind else '',posted.group(1) if posted else None,workplace=workplace,proof='Live employer role page with application control')
             if job:
                 found.append(job)
     return found
@@ -388,8 +392,11 @@ def crawl_source(source, previous):
 def discover():
     """Optional Google discovery via Serper. Results are candidates, never jobs."""
     key=os.getenv('SERPER_API_KEY')
-    if not key:
-        return {'status':'not_configured','provider':'Google via Serper','message':'Add SERPER_API_KEY to repository Actions secrets to discover new employer career pages. Existing sources are crawled without a key.','checked_at':NOW,'candidates':[]}
+    enabled=os.getenv('ENABLE_GOOGLE_DISCOVERY','').lower()=='true'
+    if not enabled or not key:
+        return {'status':'free_mode','provider':'Official career-page watchlist','google_enabled':False,
+                'message':'Free mode: monitored employer career pages are checked every 6 hours. Use country search shortcuts and Add company to expand coverage. No paid search requests are made.',
+                'checked_at':NOW,'candidates':[]}
     candidates=[]; errors=[]
     queries=['"SEO" "remote" "careers" -site:linkedin.com -site:indeed.com -site:glassdoor.com','"SEO" "remote" "contract" "careers"','"SEO" "part time" "careers"','"SEO" "worldwide" "careers"']
     for query in queries:
@@ -424,10 +431,24 @@ def main():
         jobs += [j for j in old.get('jobs',[]) if j['source_id']!=args.source]
         reports += [s for s in old.get('sources',[]) if s['id']!=args.source]
     discovery=old.get('discovery',{'status':'not_configured','candidates':[]}) if args.no_discovery else discover()
+    jobs=dedupe_jobs(jobs)
+    for report in reports:
+        report['jobs']=sum(j['source_id']==report['id'] and j['status']=='active' for j in jobs)
     payload={'schema_version':1,'updated_at':NOW,'schedule':'Every 6 hours','jobs':sorted(jobs,key=lambda j:(j['company'],j['title'])),'sources':sorted(reports,key=lambda s:s['name']),'discovery':discovery}
     DATA.parent.mkdir(parents=True,exist_ok=True)
     temp=DATA.with_suffix('.tmp'); temp.write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n'); temp.replace(DATA)
     print(json.dumps({'jobs':len(jobs),'active':sum(j['status']=='active' for j in jobs),'sources':len(reports)}))
+
+def dedupe_jobs(jobs):
+    unique={}
+    for job in jobs:
+        path=re.sub(r'^/(?:en|en-us|en-uk|en-gb)(?=/)', '',urlsplit(job['url']).path,flags=re.I)
+        key=(job['source_id'],host(job['url']),path,job['title'],job['location'])
+        if key not in unique:
+            unique[key]=job
+        else:
+            unique[key]['first_seen']=min(unique[key]['first_seen'],job['first_seen'])
+    return list(unique.values())
 
 if __name__=='__main__':
     main()

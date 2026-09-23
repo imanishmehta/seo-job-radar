@@ -46,6 +46,13 @@ class ClassificationTests(unittest.TestCase):
     def test_nested_jsonld(self):
         soup=crawl.BeautifulSoup('<script type="application/ld+json">{"@graph":[{"@type":"JobPosting","title":"SEO Specialist"}]}</script>','html.parser')
         self.assertEqual(next(crawl.job_schema(soup))['title'],'SEO Specialist')
+    def test_career_marketing_heading_is_not_a_vacancy(self):
+        response=type('Response',(),{'url':'https://example.com/career','text':'<h1>Build your career at our SEO agency</h1><p>'+('Remote role information '*30)+'</p><button>Apply now</button>'})()
+        self.assertEqual(crawl.parse_html({'id':'a','name':'A','url':response.url},response),[])
+    def test_english_locale_duplicates_merge(self):
+        base={'source_id':'a','title':'SEO Specialist','location':'Remote','first_seen':'2026-01-01'}
+        jobs=[dict(base,id='1',url='https://example.com/en/career/seo'),dict(base,id='2',url='https://example.com/en-uk/career/seo')]
+        self.assertEqual(len(crawl.dedupe_jobs(jobs)),1)
 
 if __name__=='__main__':
     unittest.main()

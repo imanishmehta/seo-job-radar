@@ -130,5 +130,131 @@
     "name": "Search Atlas",
     "url": "https://searchatlas.com/careers/",
     "country": "United States"
+  },
+  {
+    "id": "bestseo",
+    "name": "Best SEO Marketing",
+    "url": "https://www.bestseo.sg/careers/",
+    "country": "Singapore",
+    "discovered_via": "Researched official career page"
+  },
+  {
+    "id": "synscribe",
+    "name": "Synscribe",
+    "url": "https://www.synscribe.com/career",
+    "country": "Singapore",
+    "discovered_via": "Researched official career page"
+  },
+  {
+    "id": "specht",
+    "name": "Specht GmbH",
+    "url": "https://www.timospecht.de/en/career/",
+    "country": "Germany",
+    "discovered_via": "Researched official career page"
+  },
+  {
+    "id": "dalilak",
+    "name": "Dalilak Agency",
+    "url": "https://dalilakagency.de/careers",
+    "country": "Germany",
+    "discovered_via": "Researched official career page"
+  },
+  {
+    "id": "dolphin",
+    "name": "Dolphin Digital",
+    "url": "https://dolphindigital.co.uk/careers/open-jobs",
+    "country": "United Kingdom",
+    "discovered_via": "Researched official career page"
+  },
+  {
+    "id": "outrankco",
+    "name": "Outrankco",
+    "url": "https://outrankco.sg/careers/",
+    "country": "Singapore",
+    "discovered_via": "Researched official career page"
+  },
+  {
+    "id": "molo",
+    "name": "Molo Agency",
+    "url": "https://www.moloagency.co.uk/careers",
+    "country": "United Kingdom",
+    "discovered_via": "Researched official career page"
+  },
+  {
+    "id": "tilious",
+    "name": "Tilious",
+    "url": "https://tilious.com/careers/",
+    "country": "United Kingdom",
+    "discovered_via": "Researched official career page"
+  },
+  {
+    "id": "omnifound",
+    "name": "OmniFound",
+    "url": "https://www.omnifound.com/careers",
+    "country": "United Kingdom",
+    "discovered_via": "Researched official career page"
+  },
+  {
+    "id": "qagency",
+    "name": "Q Agency",
+    "url": "https://www.qagency.com.au/careers",
+    "country": "Australia",
+    "discovered_via": "Researched official career page"
+  },
+  {
+    "id": "positionxero",
+    "name": "Position Xero",
+    "url": "https://www.positionxero.com/careers/",
+    "country": "South Africa",
+    "discovered_via": "Researched official career page"
+  },
+  {
+    "id": "surge45",
+    "name": "Surge45",
+    "url": "https://surge45.com/careers",
+    "country": "United Kingdom",
+    "discovered_via": "Researched official career page"
+  },
+  {
+    "id": "rankingexperts",
+    "name": "The Ranking Experts",
+    "url": "https://therankingexperts.co.uk/careers/",
+    "country": "United Kingdom",
+    "discovered_via": "Researched official career page"
+  },
+  {
+    "id": "hdc",
+    "name": "HDC Consultancy",
+    "url": "https://www.hdcconsultancy.co.uk/careers",
+    "country": "United Kingdom",
+    "discovered_via": "Researched official career page"
+  },
+  {
+    "id": "searchseven",
+    "name": "Search Seven",
+    "url": "https://www.searchseven.co.uk/careers/",
+    "country": "United Kingdom",
+    "discovered_via": "Researched official career page"
+  },
+  {
+    "id": "seosmoothie",
+    "name": "SEO Smoothie",
+    "url": "https://seosmoothie.com/job/seo-specialist/",
+    "country": "Ireland",
+    "discovered_via": "Researched official career page"
+  },
+  {
+    "id": "sterlixit",
+    "name": "Sterlixit",
+    "url": "https://www.sterlixit.co.uk/careers",
+    "country": "United Kingdom",
+    "discovered_via": "Researched official career page"
+  },
+  {
+    "id": "thind",
+    "name": "Thind Global Services",
+    "url": "https://www.thindglobalservices.com/careers.html",
+    "country": "United Kingdom",
+    "discovered_via": "Researched official career page"
   }
 ]
