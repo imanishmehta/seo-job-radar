@@ -20,9 +20,7 @@ on:
     types: [opened, edited]
 
 permissions:
-  contents: write
-  pages: write
-  id-token: write
+  contents: read
 
 concurrency:
   group: career-radar-production
@@ -30,6 +28,9 @@ concurrency:
 
 jobs:
   refresh:
+    permissions:
+      contents: write
+      pages: read
     if: >-
       github.event_name != 'issues' ||
       (github.actor == github.repository_owner &&
@@ -59,6 +60,10 @@ jobs:
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
           ENABLE_GOOGLE_DISCOVERY: ${{ vars.ENABLE_GOOGLE_DISCOVERY }}
         run: python scripts/crawl.py
+      - name: Block secrets from public output
+        env:
+          SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+        run: python scripts/check_public_secrets.py
       - name: Preserve history
         run: |
           git config user.name 'github-actions[bot]'
@@ -88,6 +93,9 @@ jobs:
           path: site
           retention-days: 1
   deploy:
+    permissions:
+      pages: write
+      id-token: write
     needs: refresh
     runs-on: ubuntu-latest
     environment:
