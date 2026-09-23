@@ -398,10 +398,13 @@ def discover():
                 'message':'Free mode: monitored employer career pages are checked every 6 hours. Use country search shortcuts and Add company to expand coverage. No paid search requests are made.',
                 'checked_at':NOW,'candidates':[]}
     candidates=[]; errors=[]
-    queries=['"SEO" "remote" "careers" -site:linkedin.com -site:indeed.com -site:glassdoor.com','"SEO" "remote" "contract" "careers"','"SEO" "part time" "careers"','"SEO" "worldwide" "careers"']
+    # Free Serper accounts reject some quoted / advanced query patterns.
+    # Keep search plain; enforce employer-only sources on returned URLs.
+    queries=['SEO remote careers', 'SEO remote contract careers',
+             'SEO part time careers', 'SEO worldwide careers']
     for query in queries:
         try:
-            r=requests.post('https://google.serper.dev/search',headers={'X-API-KEY':key},json={'q':query,'num':20},timeout=25)
+            r=requests.post('https://google.serper.dev/search',headers={'X-API-KEY':key},json={'q':query,'num':10},timeout=25)
             r.raise_for_status()
             for item in r.json().get('organic',[]):
                 u=item.get('link','')
