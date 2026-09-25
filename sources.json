@@ -269,5 +269,18 @@
       "organization_url": "https://www.bestmarketing.com.sg/",
       "country": "Singapore"
     }
+  },
+  {
+    "id": "seowebmarketing-ca-0262cf",
+    "name": "SEO Web Marketing Canada",
+    "url": "https://seowebmarketing.ca/seo-web-marketing-career",
+    "country": "Canada",
+    "discovered_via": "Automatic: homepage career link and same-domain organization address",
+    "verification": {
+      "homepage": "https://seowebmarketing.ca/",
+      "career_link": "https://seowebmarketing.ca/seo-web-marketing-career/",
+      "organization_url": "https://seowebmarketing.ca/",
+      "country": "Canada"
+    }
   }
 ]
