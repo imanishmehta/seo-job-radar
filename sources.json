@@ -282,5 +282,31 @@
       "organization_url": "https://seowebmarketing.ca/",
       "country": "Canada"
     }
+  },
+  {
+    "id": "studiohawk-com-au-ac1257",
+    "name": "StudioHawk",
+    "url": "https://studiohawk.com.au/about-us/careers",
+    "country": "Australia",
+    "discovered_via": "Automatic: homepage career link and same-domain organization address",
+    "verification": {
+      "homepage": "https://studiohawk.com.au/",
+      "career_link": "https://studiohawk.com.au/about-us/careers/",
+      "organization_url": "https://studiohawk.com.au/",
+      "country": "Australia"
+    }
+  },
+  {
+    "id": "workspacein-com-474057",
+    "name": "workspacein.com",
+    "url": "https://workspacein.com/careers",
+    "country": "Australia",
+    "discovered_via": "Automatic: homepage career link and same-domain organization address",
+    "verification": {
+      "homepage": "https://workspacein.com/",
+      "career_link": "https://workspacein.com/careers",
+      "organization_url": "https://workspacein.com",
+      "country": "Australia"
+    }
   }
 ]
