@@ -308,5 +308,18 @@
       "organization_url": "https://workspacein.com",
       "country": "Australia"
     }
+  },
+  {
+    "id": "trueseo-co-uk-8f1592",
+    "name": "True SEO Consultants Ltd",
+    "url": "https://trueseo.co.uk/career",
+    "country": "United Kingdom",
+    "discovered_via": "Automatic: homepage career link and same-domain organization address",
+    "verification": {
+      "homepage": "https://trueseo.co.uk/",
+      "career_link": "https://trueseo.co.uk/career/",
+      "organization_url": "https://trueseo.co.uk/",
+      "country": "United Kingdom"
+    }
   }
 ]
