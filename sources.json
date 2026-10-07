@@ -321,5 +321,18 @@
       "organization_url": "https://trueseo.co.uk/",
       "country": "United Kingdom"
     }
+  },
+  {
+    "id": "localseoagencyireland-ie-2c777b",
+    "name": "Local SEO Agency Ireland",
+    "url": "https://localseoagencyireland.ie/careers",
+    "country": "Ireland",
+    "discovered_via": "Automatic: homepage career link and same-domain organization address",
+    "verification": {
+      "homepage": "https://localseoagencyireland.ie/",
+      "career_link": "https://localseoagencyireland.ie/careers",
+      "organization_url": "https://localseoagencyireland.ie/",
+      "country": "Ireland"
+    }
   }
 ]
