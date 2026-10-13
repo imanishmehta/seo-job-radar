@@ -334,5 +334,18 @@
       "organization_url": "https://localseoagencyireland.ie/",
       "country": "Ireland"
     }
+  },
+  {
+    "id": "twine-net-19f040",
+    "name": "Twine",
+    "url": "https://www.twine.net/jobs",
+    "country": "United Kingdom",
+    "discovered_via": "Automatic: homepage career link and same-domain organization address",
+    "verification": {
+      "homepage": "https://www.twine.net/",
+      "career_link": "https://www.twine.net/jobs",
+      "organization_url": "https://www.twine.net/",
+      "country": "United Kingdom"
+    }
   }
 ]
