@@ -347,5 +347,18 @@
       "organization_url": "https://www.twine.net/",
       "country": "United Kingdom"
     }
+  },
+  {
+    "id": "theohub-global-bec210",
+    "name": "The Opportunity Hub",
+    "url": "https://www.theohub.global/jobs",
+    "country": "United Kingdom",
+    "discovered_via": "Automatic: homepage career link and same-domain organization address",
+    "verification": {
+      "homepage": "https://www.theohub.global/",
+      "career_link": "https://www.theohub.global/jobs",
+      "organization_url": "https://www.theohub.global",
+      "country": "United Kingdom"
+    }
   }
 ]
