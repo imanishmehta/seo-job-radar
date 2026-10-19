@@ -360,5 +360,18 @@
       "organization_url": "https://www.theohub.global",
       "country": "United Kingdom"
     }
+  },
+  {
+    "id": "arbeitnow-com-51a850",
+    "name": "Arbeitnow",
+    "url": "https://www.arbeitnow.com/jobs/seo",
+    "country": "Germany",
+    "discovered_via": "Automatic: homepage career link and same-domain organization address",
+    "verification": {
+      "homepage": "https://www.arbeitnow.com/",
+      "career_link": "https://www.arbeitnow.com/jobs/seo",
+      "organization_url": "https://www.arbeitnow.com",
+      "country": "Germany"
+    }
   }
 ]
